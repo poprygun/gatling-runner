@@ -1,13 +1,20 @@
 package io.microsamples.load.gatlingrunner;
 
 import io.gatling.app.Gatling;
-import io.microsamples.testz.simulation.GetRootsSimulation;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 class GatlingRunnerApplicationTests {
+
+	@Test
+	void listStatic(){
+		File[] directories = new File("src/main/resources/static").listFiles(File::isDirectory);
+		final List<String> collect = Arrays.asList(directories).stream().map(File::getName).collect(Collectors.toList());
+	}
 
 	@Test
 	void contextLoads() {
