@@ -1,0 +1,12 @@
+reports:
+  dir: /Users/ashumilov/projects/syncrhony/gatling-runner/target/reports/
+  location: file:${reports.dir}
+
+---
+
+spring:
+  profiles: cloud
+
+reports:
+  dir: /home/vcap/app/reports/
+  location: file:${reports.dir}

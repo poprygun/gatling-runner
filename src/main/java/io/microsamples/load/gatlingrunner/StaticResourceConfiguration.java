@@ -15,6 +15,7 @@ public class StaticResourceConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        log.info("Loading reports from: {}", reportsLocation);
         registry.addResourceHandler("/**").addResourceLocations(reportsLocation);
     }
 

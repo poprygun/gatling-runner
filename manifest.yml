@@ -1,0 +1,6 @@
+---
+applications:
+- name: gatling-runner
+  memory: 1G
+  path: target/gatling-runner.jar
+
