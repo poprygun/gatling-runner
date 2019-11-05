@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Slf4j
 public class StaticResourceConfiguration implements WebMvcConfigurer {
 
-    @Value("${reports.dir:classpath:/static/}")
+    @Value("${reports.location:classpath:/static/}")
     private String reportsLocation;
 
     @Override

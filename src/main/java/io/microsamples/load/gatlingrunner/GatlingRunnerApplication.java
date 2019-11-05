@@ -48,8 +48,8 @@ class MySecurityManager extends SecurityManager {
 @Controller
 class LoadController {
 
-    @Value("${reports.location:src/main/resources/static}")
-    private String reportsLocation;
+    @Value("${reports.dir:src/main/resources/static}")
+    private String reportsDir;
 
     private AsyncService service;
 
@@ -60,7 +60,7 @@ class LoadController {
     @GetMapping("/run-test")
     private ResponseEntity<String> runTest() {
         String[] args = {"-s", "io.microsamples.testz.simulation.GetRootsSimulation"
-                , "-rf", reportsLocation};
+                , "-rf", reportsDir};
         runTestNoExit(args);
 
         return ResponseEntity.ok("Report Scheduled...  Check /reports in few minutes");
@@ -80,7 +80,7 @@ class LoadController {
 
     @GetMapping("/reports")
     public String reports(Model model) {
-        File[] directories = new File(reportsLocation).listFiles(File::isDirectory);
+        File[] directories = new File(reportsDir).listFiles(File::isDirectory);
         final List<String> reports = Arrays.asList(directories).stream().map(File::getName).collect(Collectors.toList());
         model.addAttribute("reports", reports);
         return "index";
