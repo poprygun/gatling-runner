@@ -1,6 +1,7 @@
 package io.microsamples.load.gatlingrunner;
 
 import io.gatling.app.Gatling;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.File;
 import java.security.Permission;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
@@ -36,16 +39,19 @@ class AsyncService {
 }
 
 class MySecurityManager extends SecurityManager {
-    @Override public void checkExit(int status) {
+    @Override
+    public void checkExit(int status) {
         throw new SecurityException();
     }
 
-    @Override public void checkPermission(Permission perm) {
+    @Override
+    public void checkPermission(Permission perm) {
         // Allow other activities by default
     }
 }
 
 @Controller
+@Slf4j
 class LoadController {
 
     @Value("${reports.dir:src/main/resources/static}")
@@ -58,9 +64,13 @@ class LoadController {
     }
 
     @GetMapping("/run-test")
-    private ResponseEntity<String> runTest() {
-        String[] args = {"-s", "io.microsamples.testz.simulation.GetRootsSimulation"
-                , "-rf", reportsDir};
+    private ResponseEntity<String> runTest(@RequestParam(value = "simulation"
+            , required = false, defaultValue = "io.microsamples.testz.simulation.GetRootsSimulation") String simulation) {
+
+        log.info("Running simulation: {} in {}", simulation, reportsDir);
+
+        String[] args = {"-s", simulation, "-rf", reportsDir};
+
         runTestNoExit(args);
 
         return ResponseEntity.ok("Report Scheduled...  Check /reports in few minutes");
@@ -72,8 +82,8 @@ class LoadController {
         service.doWork(() -> {
             try {
                 Gatling.main(args);
-            } catch (SecurityException se){
-               //prevent program from exiting
+            } catch (SecurityException se) {
+                //prevent program from exiting
             }
         });
     }

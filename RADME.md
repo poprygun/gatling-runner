@@ -1,4 +1,13 @@
-## Make sure gatling Uber jar dependency is added.
+# Wrapper for Gatling test simulations that can be deployd to CloudFoundry
 
-mvn install:install-file -Dfile=<path-to-file> -DgroupId=io.microsamples.testz \
-    -DartifactId=load -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
+## Run default simulation
+
+`/run-test`
+
+## Specify simulation to execute
+
+`/run-test?simulation=path.to.my.SimulationClass`
+
+## Reports are generated in 
+
+`/reports`

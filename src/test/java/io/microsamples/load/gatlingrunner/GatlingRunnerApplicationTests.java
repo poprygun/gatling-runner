@@ -1,6 +1,7 @@
 package io.microsamples.load.gatlingrunner;
 
 import io.gatling.app.Gatling;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Disabled
 class GatlingRunnerApplicationTests {
 
 	@Test
