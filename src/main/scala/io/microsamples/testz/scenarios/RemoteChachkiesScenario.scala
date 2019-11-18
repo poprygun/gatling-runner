@@ -3,12 +3,12 @@ package io.microsamples.testz.scenarios
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
-object GetRoots {
+object RemoteChachkiesScenario {
 
-  val getRootsHttp = http("get remote chachkies")
+  val chachkiesPath = http("get remote chachkies")
     .get("/remote-chachkies")
     .check(status is 200)
 
-  val getRoots = scenario("Get Remote Chachkies")
-    .exec(getRootsHttp)
+  val chachkiesRoot = scenario("Get Remote Chachkies")
+    .exec(chachkiesPath)
 }

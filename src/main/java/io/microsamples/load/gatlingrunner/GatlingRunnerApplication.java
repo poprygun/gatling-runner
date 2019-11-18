@@ -18,7 +18,6 @@ import java.io.File;
 import java.security.Permission;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
@@ -65,7 +64,7 @@ class LoadController {
 
     @GetMapping("/run-test")
     private ResponseEntity<String> runTest(@RequestParam(value = "simulation"
-            , required = false, defaultValue = "io.microsamples.testz.simulation.GetRootsSimulation") String simulation) {
+            , required = false, defaultValue = "io.microsamples.testz.simulation.RemoteChachkiesSimulation") String simulation) {
 
         log.info("Running simulation: {} in {}", simulation, reportsDir);
 
