@@ -1,5 +1,7 @@
 package io.microsamples.load.gatlingrunner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.gatling.app.Gatling;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.File;
@@ -58,8 +62,27 @@ class LoadController {
 
     private AsyncService service;
 
-    LoadController(AsyncService service) {
+    private ObjectMapper objectMapper;
+
+    LoadController(AsyncService service, ObjectMapper objectMapper) {
         this.service = service;
+        this.objectMapper = objectMapper;
+    }
+
+    @PostMapping("/run-test-post")
+    private ResponseEntity<String> runTest(@RequestBody Chachkie chachkie) throws JsonProcessingException {
+
+        final String simulationClazz = "io.microsamples.testz.simulation.RemoteChachkiesSimulation";
+
+//        System.setProperty("test.payload", chachkie.toString());
+        GatlingContext.INSTANCE.payload = chachkie.toString();
+
+        log.info("Running simulation: {} in {} with payload {}"
+                , simulationClazz
+                , reportsDir
+                , objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(chachkie));
+
+        return executeGatlingScenario(simulationClazz);
     }
 
     @GetMapping("/run-test")
@@ -68,6 +91,10 @@ class LoadController {
 
         log.info("Running simulation: {} in {}", simulation, reportsDir);
 
+        return executeGatlingScenario(simulation);
+    }
+
+    private ResponseEntity<String> executeGatlingScenario(String simulation) {
         String[] args = {"-s", simulation, "-rf", reportsDir};
 
         runTestNoExit(args);
