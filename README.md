@@ -1,4 +1,4 @@
-# Wrapper for Gatling test simulations that can be deployd to CloudFoundry
+# Wrapper for Gatling test simulations that can be pushed to CloudFoundry
 
 ## Run default simulation
 
